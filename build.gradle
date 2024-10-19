@@ -188,3 +188,10 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+// compileJavaタスクのエンコーディング
+compileJava.options.encoding = 'UTF-8'
+// compileTestJavaタスクのエンコーディング
+compileTestJava.options.encoding = 'UTF-8'
+// javadocタスクのエンコーディング
+javadoc.options.encoding = 'UTF-8'
