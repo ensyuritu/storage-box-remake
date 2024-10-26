@@ -88,12 +88,16 @@ public class Main {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 
-            //MenuScreens.register(ModContainers.CUSTOM_CONTAINER.get(), StorageBoxScreen::new);
-            if (ModContainers.CUSTOM_CONTAINER.isPresent()) {
-                MenuScreens.register(ModContainers.CUSTOM_CONTAINER.get(), StorageBoxScreen::new);
-            } else {
-                LOGGER.error("Failed to register StorageBoxScreen, CUSTOM_CONTAINER is null");
-            }
+            event.enqueueWork(
+                    () -> MenuScreens.register(ModContainers.CUSTOM_CONTAINER.get(), StorageBoxScreen::new)
+            );
+//            if (ModContainers.CUSTOM_CONTAINER.isPresent()) {
+//
+//            } else {
+//                LOGGER.error("Failed to register StorageBoxScreen, CUSTOM_CONTAINER is null");
+//            }
         }
     }
+
+
 }
