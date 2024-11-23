@@ -16,13 +16,13 @@ public class StorageBoxScreen extends AbstractContainerScreen<StorageBoxMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack pose, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
-        this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        this.blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
     }
 
     @Override

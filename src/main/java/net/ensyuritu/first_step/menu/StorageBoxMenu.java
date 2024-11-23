@@ -1,18 +1,44 @@
 package net.ensyuritu.first_step.menu;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class StorageBoxMenu extends AbstractContainerMenu {
-    public StorageBoxMenu(int id, Inventory playerInventory) {
-        super(ModContainers.CUSTOM_CONTAINER.get(), id);
+    //Client Menu Constructor
+    public StorageBoxMenu(int containerId, Inventory playerInventory) {
+        this(containerId, playerInventory, new ItemStackHandler(1), DataSlot.standalone());
     }
 
-    public StorageBoxMenu(int id, Inventory playerInventory, FriendlyByteBuf data) {
-        super(ModContainers.CUSTOM_CONTAINER.get(), id);
+    //Server Menu Constructor
+    public StorageBoxMenu(int containerId, Inventory playerInventory, IItemHandler dataInventory, DataSlot dataSingle) {
+        super(ModContainers.CUSTOM_CONTAINER.get(), containerId);
+
+        int slotSquareSize = 18;
+
+        // Add Hotbar Slot
+        for(int i=0; i<9; i++){
+            int inventorySlotId = i;
+            int PosX = 8;
+            int PosY = 142;
+            this.addSlot(new Slot(playerInventory, inventorySlotId, PosX + slotSquareSize * i, PosY));
+        }
+
+        // Add Inventory Slot
+        for(int i=0; i<27; i++){
+            int inventorySlotId = i + 9;
+            int PosX = 8;
+            int PosY = 84;
+            this.addSlot(new Slot(playerInventory, inventorySlotId, PosX + slotSquareSize * (i % 9), PosY + slotSquareSize * (i / 9)));
+        }
+
+        // Add data slots for handled integers
+        this.addDataSlot(dataSingle);
     }
 
     @Override
