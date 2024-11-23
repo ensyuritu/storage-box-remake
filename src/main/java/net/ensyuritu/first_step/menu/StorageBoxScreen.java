@@ -24,4 +24,19 @@ public class StorageBoxScreen extends AbstractContainerScreen<StorageBoxMenu> {
         int y = (this.height - this.imageHeight) / 2;
         this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
     }
+
+    @Override
+    public void render(PoseStack pose, int mouseX, int mouseY, float partialTick){
+        this.renderBackground(pose);
+        super.render(pose, mouseX, mouseY, partialTick);
+
+        this.renderTooltip(pose, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderLabels(PoseStack pose, int mouseX, int mouseY){
+        super.renderLabels(pose, mouseX, mouseY);
+
+        //this.font.draw(pose, label, labelX, labelY, 0x404040);
+    }
 }
