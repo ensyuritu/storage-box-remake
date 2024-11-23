@@ -12,5 +12,5 @@ public class ModContainers {
 
 
     public static final RegistryObject<MenuType<StorageBoxMenu>> CUSTOM_CONTAINER = CONTAINERS.register("storage_box",
-            () -> IForgeMenuType.create(StorageBoxMenu::new));
+            () -> new MenuType<>(StorageBoxMenu::new));
 }
