@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class StorageBoxMenu extends AbstractContainerMenu {
     //Client Menu Constructor
@@ -20,6 +21,14 @@ public class StorageBoxMenu extends AbstractContainerMenu {
         super(ModContainers.CUSTOM_CONTAINER.get(), containerId);
 
         int slotSquareSize = 18;
+
+        // Add Item Slot
+        {
+            int posX = 26;
+            int posY = 36;
+            this.addSlot(new SlotItemHandler(dataInventory, dataInventory.getSlots(), posX, posY));
+        }
+
 
         // Add Hotbar Slot
         for(int i=0; i<9; i++){

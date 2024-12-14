@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class StorageBoxScreen extends AbstractContainerScreen<StorageBoxMenu> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/kari.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/storage_box.png");
 
     public StorageBoxScreen(StorageBoxMenu menu, Inventory playerInventory, Component title){
         super(menu, playerInventory, title);
