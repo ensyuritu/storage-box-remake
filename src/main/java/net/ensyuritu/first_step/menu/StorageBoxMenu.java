@@ -1,53 +1,48 @@
 package net.ensyuritu.first_step.menu;
 
+import net.ensyuritu.first_step.items.StorageBoxItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class StorageBoxMenu extends AbstractContainerMenu {
-    //Client Menu Constructor
+    private final ItemStackHandler itemHandler;
+    private final ItemStack stack;
+
+    // クライアント側コンストラクタ（サーバーデータなし）
     public StorageBoxMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new ItemStackHandler(1), DataSlot.standalone());
+        this(containerId, playerInventory, new ItemStackHandler(1), ItemStack.EMPTY);
     }
 
-    //Server Menu Constructor
-    public StorageBoxMenu(int containerId, Inventory playerInventory, IItemHandler dataInventory, DataSlot dataSingle) {
+    // サーバー側コンストラクタ
+    public StorageBoxMenu(int containerId, Inventory playerInventory, ItemStackHandler itemHandler, ItemStack stack) {
         super(ModContainers.CUSTOM_CONTAINER.get(), containerId);
+        this.itemHandler = itemHandler;
+        this.stack = stack;
 
-        int slotSquareSize = 18;
+        // カスタムスロット
+        this.addSlot(new SlotItemHandler(itemHandler, 0, 26, 36));
 
-        // Add Item Slot
-        {
-            int posX = 26;
-            int posY = 36;
-            this.addSlot(new SlotItemHandler(dataInventory, 0, posX, posY));
+        // プレイヤーのインベントリスロット
+        for (int row = 0; row < 3; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+            }
         }
 
-
-        // Add Hotbar Slot
-        for(int i=0; i<9; i++){
-            int inventorySlotId = i;
-            int PosX = 8;
-            int PosY = 142;
-            this.addSlot(new Slot(playerInventory, inventorySlotId, PosX + slotSquareSize * i, PosY));
+        // ホットバー
+        for (int col = 0; col < 9; ++col) {
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
         }
+    }
 
-        // Add Inventory Slot
-        for(int i=0; i<27; i++){
-            int inventorySlotId = i + 9;
-            int PosX = 8;
-            int PosY = 84;
-            this.addSlot(new Slot(playerInventory, inventorySlotId, PosX + slotSquareSize * (i % 9), PosY + slotSquareSize * (i / 9)));
-        }
-
-        // Add data slots for handled integers
-        this.addDataSlot(dataSingle);
+    @Override
+    public boolean stillValid(Player player) {
+        return true;
     }
 
     @Override
@@ -56,7 +51,12 @@ public class StorageBoxMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return true;
+    public void removed(Player player) {
+        super.removed(player);
+        // クライアントでは保存しない
+        if (!player.level.isClientSide) {
+            // アイテムにインベントリデータを保存
+            StorageBoxItem.saveInventory(stack, itemHandler);
+        }
     }
 }
