@@ -47,20 +47,18 @@ public class StorageBoxItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        if (!context.getLevel().isClientSide) {
-            Player player = context.getPlayer();
-            if (player != null) {
-                ItemStack stack = context.getItemInHand();
-                ItemStackHandler handler = getInventory(stack);
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        if (!world.isClientSide) {
+            ItemStack stack = player.getItemInHand(hand);
+            ItemStackHandler handler = getInventory(stack);
 
-                // Menuを開く
-                player.openMenu(new SimpleMenuProvider(
-                        (id, playerInventory, playerEntity) -> new StorageBoxMenu(id, playerInventory, handler, stack),
-                        Component.translatable("container.storage_box")
-                ));
-            }
+            // Menuを開く
+            player.openMenu(new SimpleMenuProvider(
+                    (id, playerInventory, playerEntity) -> new StorageBoxMenu(id, playerInventory, handler, stack),
+                    Component.translatable("container.storage_box")
+            ));
+
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResultHolder.success(player.getItemInHand(hand));
     }
 }
