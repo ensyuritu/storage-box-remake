@@ -26,7 +26,7 @@ public class StorageBoxMenu extends AbstractContainerMenu {
         {
             int posX = 26;
             int posY = 36;
-            this.addSlot(new SlotItemHandler(dataInventory, dataInventory.getSlots(), posX, posY));
+            this.addSlot(new SlotItemHandler(dataInventory, 0, posX, posY));
         }
 
 
